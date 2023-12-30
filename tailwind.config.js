@@ -14,6 +14,8 @@ export default {
             colors: {
                 "green1": '#49977d',
                 "green-light": '#74b59f',
+                "menu-overlay": '#4c4c4c',
+                "menu-items-hover": '#f2f2f2',
             },
         },
     },

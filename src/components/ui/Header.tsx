@@ -13,7 +13,7 @@ const Header = () => {
     };
 
     return (
-        <header>
+        <header className="pb-3 ">
             <div className="ribbon  bg-green1 text-white w-full px-24 py-3 flex items-center relative text-xs md:text-sm">
                 <div className="social-media hidden md:flex gap-4 ml-2">
                     <FaFacebookF />

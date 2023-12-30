@@ -93,8 +93,8 @@ const Header = () => {
             ></div>
 
             <div
-                className={`side-menu h-full w-1/2 bg-white z-50 overflow-x-hidden transition-all ease-in duration-1000 left-0 top-0 ${
-                    sideMenuOpen ? 'fixed' : 'hidden'
+                className={`side-menu h-full bg-white z-50 overflow-x-hidden fixed transition-all ease-in-out duration-500 left-0 top-0 ${
+                    sideMenuOpen ? 'w-1/2' : 'w-0'
                 } `}
             >
                 <div className=" bg-gray-200 text-center p-5 text-sm border-b-2 border-green1">

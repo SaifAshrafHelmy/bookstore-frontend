@@ -6,6 +6,8 @@ import Footer from './components/ui/Footer';
 import Register from './components/pages/Register';
 import Ribbon from './components/ui/Ribbon';
 
+
+
 function App() {
     return (
         <div className="container w-[100%] min-h-screen mx-auto flex flex-col gap-0 justify-between">

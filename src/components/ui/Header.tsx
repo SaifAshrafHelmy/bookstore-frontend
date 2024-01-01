@@ -4,6 +4,7 @@ import logo from "../../assets/logo.svg"
 import { IoHeartOutline, IoCartOutline, IoPersonOutline, IoMenuSharp   } from "react-icons/io5";
 import { SlMagnifier } from "react-icons/sl";
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 const Header = () => {
     const [sideMenuOpen, setSideMenuOpen] = useState(false);
@@ -29,7 +30,7 @@ const Header = () => {
             <nav className="pt-4 px-24 hidden md:block">
                 <ul className="flex gap-4 justify-center lg:justify-start">
                     <li>
-                        <a href="#">Home</a>
+                        <Link to="/">Home</Link>
                     </li>
                     <li>
                         <a href="#">About Us</a>
@@ -57,14 +58,14 @@ const Header = () => {
                     <IoMenuSharp className="text-2xl hover:cursor-pointer" />
                 </div>
                 <div className="logo min-w-40">
-                    <a href="#">
+                    <Link to="/">
                         <img
                             src={logo}
                             width={'200px'}
                             height={'200px'}
                             alt=""
                         />
-                    </a>
+                    </Link>
                 </div>
                 <div className="search hidden lg:flex flex-grow flex-shrink-0">
                     <input
@@ -79,7 +80,9 @@ const Header = () => {
                 </div>
                 <div className="button flex gap-6">
                     <SlMagnifier className="text-2xl hover:cursor-pointer lg:hidden" />
-                    <IoPersonOutline className="text-2xl hover:cursor-pointer hidden md:block" />
+                    <Link to="/login">
+                        <IoPersonOutline className="text-2xl hover:cursor-pointer hidden md:block" />
+                    </Link>
                     <IoHeartOutline className="text-2xl hover:cursor-pointer hidden md:block" />
                     <IoCartOutline className="text-2xl  hover:cursor-pointer" />
                 </div>
@@ -101,11 +104,11 @@ const Header = () => {
                     MENU
                 </div>
                 <ul className="flex flex-col">
-                    <a href="#">
+                    <Link to="/" onClick={handleSideMenu}>
                         <li className="border-b-2 border-gray-100 px-5 py-5 hover:bg-menu-items-hover">
                             Home
                         </li>
-                    </a>
+                    </Link>
                     <a href="#">
                         <li className="border-b-2 border-gray-100 px-5 py-5 hover:bg-menu-items-hover flex gap-1">
                             <SlMagnifier className="text-2xl" />
@@ -122,12 +125,12 @@ const Header = () => {
                             Deals & Promotions
                         </li>
                     </a>
-                    <a href="#">
+                    <Link to="/login" onClick={handleSideMenu}>
                         <li className="border-b-2 border-gray-100 px-5 py-5 hover:bg-menu-items-hover flex gap-1">
                             <IoPersonOutline className="text-2xl" />
                             Login/Register
                         </li>
-                    </a>
+                    </Link>
                 </ul>
             </div>
         </header>

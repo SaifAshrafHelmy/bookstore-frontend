@@ -1,6 +1,27 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import Swal from 'sweetalert2';
+
 const SERVER_URL = import.meta.env.VITE_SERVER_URL;
+
+const showPopUp = (status) => {
+    console.log('showing popup.......');
+    if (status == 'SUCCESS') {
+        Swal.fire({
+            icon: 'success',
+            title: 'Logged in successfully, redirecting...',
+            showConfirmButton: false,
+            timer: 2000, // Automatically close after 2 seconds
+        });
+    } else {
+        Swal.fire({
+            icon: 'error',
+            title: 'Failed to login',
+            showConfirmButton: false,
+            timer: 2000, // Automatically close after 2 seconds
+        });
+    }
+};
 
 const Login = () => {
     const [email, setEmail] = useState('');
@@ -27,16 +48,20 @@ const Login = () => {
                     console.log('NO ACCESS TOKEN ISSUED');
                     console.log(data);
                     setIsError(true);
+                    showPopUp('ERROR');
                     return;
                 }
                 setIsSuccess(true);
                 console.log(data.access_token);
+                showPopUp('SUCCESS');
             } else {
                 setIsError(true);
                 console.log('ERROR: ', data.status, data.message);
+                showPopUp('ERROR');
             }
         } catch (e) {
             setIsError(true);
+            showPopUp('ERROR');
 
             console.error(
                 '--- ERROR CONNECTING TO SERVER, PLEASE CHECK YOUR CONNECTION OR IF THE SERVER IS UP ---'

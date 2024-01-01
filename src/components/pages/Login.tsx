@@ -4,7 +4,7 @@ import Swal from 'sweetalert2';
 
 const SERVER_URL = import.meta.env.VITE_SERVER_URL;
 
-const showPopUp = (status) => {
+const showPopUp = (status: string, message?: string) => {
     console.log('showing popup.......');
     if (status == 'SUCCESS') {
         Swal.fire({
@@ -17,6 +17,7 @@ const showPopUp = (status) => {
         Swal.fire({
             icon: 'error',
             title: 'Failed to login',
+            text: message,
             showConfirmButton: false,
             timer: 2000, // Automatically close after 2 seconds
         });
@@ -26,9 +27,6 @@ const showPopUp = (status) => {
 const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [isSuccess, setIsSuccess] = useState(false);
-    const [isError, setIsError] = useState(false);
-
     const parsedLoginData = JSON.stringify({ email, password });
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -47,21 +45,17 @@ const Login = () => {
                 if (!data.access_token) {
                     console.log('NO ACCESS TOKEN ISSUED');
                     console.log(data);
-                    setIsError(true);
-                    showPopUp('ERROR');
+                    showPopUp('ERROR', 'Could not get access');
                     return;
                 }
-                setIsSuccess(true);
                 console.log(data.access_token);
                 showPopUp('SUCCESS');
             } else {
-                setIsError(true);
                 console.log('ERROR: ', data.status, data.message);
-                showPopUp('ERROR');
+                showPopUp('ERROR', data.message);
             }
         } catch (e) {
-            setIsError(true);
-            showPopUp('ERROR');
+            showPopUp('ERROR', 'Could not connect to server.');
 
             console.error(
                 '--- ERROR CONNECTING TO SERVER, PLEASE CHECK YOUR CONNECTION OR IF THE SERVER IS UP ---'

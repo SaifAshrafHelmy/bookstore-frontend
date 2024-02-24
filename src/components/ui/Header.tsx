@@ -1,13 +1,22 @@
 
 import { FaTwitter, FaInstagram, FaFacebookF, FaTiktok } from 'react-icons/fa';
 import logo from "../../assets/logo.svg"
-import { IoHeartOutline, IoCartOutline, IoPersonOutline, IoMenuSharp   } from "react-icons/io5";
-import { SlMagnifier } from "react-icons/sl";
+import {
+    IoHeartOutline,
+    IoCartOutline,
+    IoPersonOutline,
+    IoMenuSharp,
+    IoLogInOutline,
+} from 'react-icons/io5';
+import { SlMagnifier } from 'react-icons/sl';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useCookies } from 'react-cookie';
 
 const Header = () => {
     const [sideMenuOpen, setSideMenuOpen] = useState(false);
+    const [cookies, setCookie] = useCookies(['user']);
+
     const handleSideMenu = () => {
         setSideMenuOpen((prev) => !prev);
         console.log({ sideMenuOpen });
@@ -27,7 +36,7 @@ const Header = () => {
                 </div>
             </div>
 
-            <nav className="pt-4 px-24 hidden md:block">
+            <nav className="pt-4 px-24 hidden md:flex justify-between">
                 <ul className="flex gap-4 justify-center lg:justify-start">
                     <li>
                         <Link to="/">Home</Link>
@@ -51,6 +60,20 @@ const Header = () => {
                         <a href="#">Contact Us</a>
                     </li>
                 </ul>
+                <div className=" inline justify-end">
+                    <div>
+                        {cookies.user ? (
+                            'Hello, ' + cookies.user.first_name
+                        ) : (
+                            <Link to="/login">
+                                <li className=" border-gray-100  flex gap-1">
+                                    <IoLogInOutline className="text-2xl" />
+                                    Login/Register
+                                </li>
+                            </Link>
+                        )}
+                    </div>
+                </div>
             </nav>
 
             <div className="sub-header flex px-24 gap-12 pt-4 justify-center items-center">
@@ -80,9 +103,11 @@ const Header = () => {
                 </div>
                 <div className="button flex gap-6">
                     <SlMagnifier className="text-2xl hover:cursor-pointer lg:hidden" />
-                    <Link to="/login">
-                        <IoPersonOutline className="text-2xl hover:cursor-pointer hidden md:block" />
-                    </Link>
+                    {cookies.user && (
+                        <Link to="/myaccount">
+                            <IoPersonOutline className="text-2xl hover:cursor-pointer hidden md:block" />
+                        </Link>
+                    )}
                     <IoHeartOutline className="text-2xl hover:cursor-pointer hidden md:block" />
                     <IoCartOutline className="text-2xl  hover:cursor-pointer" />
                 </div>
@@ -125,12 +150,21 @@ const Header = () => {
                             Deals & Promotions
                         </li>
                     </a>
-                    <Link to="/login" onClick={handleSideMenu}>
-                        <li className="border-b-2 border-gray-100 px-5 py-5 hover:bg-menu-items-hover flex gap-1">
-                            <IoPersonOutline className="text-2xl" />
-                            Login/Register
-                        </li>
-                    </Link>
+                    {cookies.user ? (
+                        <Link to="/myaccount" onClick={handleSideMenu}>
+                            <li className="border-b-2 border-gray-100 px-5 py-5 hover:bg-menu-items-hover flex gap-1">
+                                <IoPersonOutline className="text-2xl" />
+                                My Account
+                            </li>
+                        </Link>
+                    ) : (
+                        <Link to="/login" onClick={handleSideMenu}>
+                            <li className="border-b-2 border-gray-100 px-5 py-5 hover:bg-menu-items-hover flex gap-1">
+                                <IoLogInOutline className="text-2xl" />
+                                Login/Register
+                            </li>
+                        </Link>
+                    )}
                 </ul>
             </div>
         </header>

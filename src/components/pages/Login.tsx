@@ -1,33 +1,44 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
+const MySwal = withReactContent(Swal);
+import { useCookies } from 'react-cookie';
 
 const SERVER_URL = import.meta.env.VITE_SERVER_URL;
-
-const showPopUp = (status: string, message?: string) => {
-    console.log('showing popup.......');
-    if (status == 'SUCCESS') {
-        Swal.fire({
-            icon: 'success',
-            title: 'Logged in successfully, redirecting...',
-            showConfirmButton: false,
-            timer: 2000, // Automatically close after 2 seconds
-        });
-    } else {
-        Swal.fire({
-            icon: 'error',
-            title: 'Failed to login',
-            text: message,
-            showConfirmButton: false,
-            timer: 2000, // Automatically close after 2 seconds
-        });
-    }
-};
 
 const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const parsedLoginData = JSON.stringify({ email, password });
+    const [cookies, setCookie] = useCookies(['access_token', 'user']);
+
+    // const signIn = useSignIn();
+    const navigate = useNavigate();
+
+    const showPopUp = (status: string, message?: string) => {
+        console.log('showing popup.......');
+        if (status == 'SUCCESS') {
+            MySwal.fire({
+                icon: 'success',
+                title: 'Logged in successfully, redirecting...',
+                showConfirmButton: false,
+                timer: 2000, // Automatically close after 2 seconds
+                didOpen: () => {
+                    MySwal.showLoading();
+                },
+            }).then(() => navigate('/'));
+        } else {
+            MySwal.fire({
+                icon: 'error',
+                title: 'Failed to login',
+                text: message,
+                showConfirmButton: false,
+                timer: 2000, // Automatically close after 2 seconds
+            });
+        }
+    };
+
     const handleLogin = async (e) => {
         e.preventDefault();
 
@@ -42,6 +53,7 @@ const Login = () => {
             const data = await response.json();
             if (response.status >= 200 && response.status < 300) {
                 console.log('ALL is OKAY', `status is ${response.status}`);
+
                 if (!data.access_token) {
                     console.log('NO ACCESS TOKEN ISSUED');
                     console.log(data);
@@ -49,6 +61,30 @@ const Login = () => {
                     return;
                 }
                 console.log(data.access_token);
+
+                setCookie('access_token', data.access_token, { path: '/' });
+
+                const userData = await fetch(`${SERVER_URL}/users/profile`, {
+                    method: 'get',
+                    headers: {
+                        Authorization: `Bearer ${data.access_token}`,
+                    },
+                });
+                const parsedUserData = await userData.json();
+                if (!parsedUserData) {
+                    console.log('NO ACCESS TOKEN ISSUED');
+                    showPopUp('ERROR', 'Could not get user data');
+                    return;
+                }
+                console.log(parsedUserData);
+                parsedUserData.first_name =
+                    parsedUserData.first_name.charAt(0).toUpperCase() +
+                    parsedUserData.first_name.slice(1);
+                parsedUserData.last_name =
+                    parsedUserData.last_name.charAt(0).toUpperCase() +
+                    parsedUserData.last_name.slice(1);
+                setCookie('user', parsedUserData, { path: '/' });
+
                 showPopUp('SUCCESS');
             } else {
                 console.log('ERROR: ', data.status, data.message);

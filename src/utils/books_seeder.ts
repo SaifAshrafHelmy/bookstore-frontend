@@ -1,4 +1,4 @@
-export const books = [
+export const booksSeedData = [
     { id: 1, title: 'book1', description: 'the best book ever' },
     { id: 2, title: 'book2', description: 'the best book ever' },
     { id: 3, title: 'book3', description: 'the best book ever' },

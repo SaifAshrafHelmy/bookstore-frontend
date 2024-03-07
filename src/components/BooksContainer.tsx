@@ -17,14 +17,17 @@ const BooksContainer = ({
 
     return (
         <div className="w-full px-24 py-3 my-5 ">
-            <h2 className="text-4xl">Best Sellers</h2>
-            <ul className="flex flex-wrap justify-center gap-x-4 gap-y-10 p-3 my-3 border-2 border-gray-100">
+            <h2 className="text-4xl">Latest Books</h2>
+            <ul className="flex flex-wrap justify-center gap-x-4 gap-y-10 p-3 my-3 border-2 border-gray-100 ">
                 {booksToShow.map((book) => (
                     <BookCard
                         key={book.id}
                         id={book.id}
                         title={book.title}
                         description={book.description}
+                        image={book.cover_image}
+                        category={book.category}
+                        price={book.price}
                     />
                 ))}
             </ul>

@@ -3,10 +3,10 @@ import bookIcon from '../assets/book_icon.svg';
 const BookCard = ({ id, title, description, category, price, image }) => {
     return (
         <>
-            <div className="max-w-sm rounded overflow-hidden shadow-lg">
+            <div className="max-w-sm rounded overflow-hidden shadow-lg ">
                 <img
                     className="w-[50%] mx-auto"
-                    src={bookIcon}
+                    src={image ? image : bookIcon}
                     alt="Book illustration"
                 />
                 <div className="px-6 py-4">
